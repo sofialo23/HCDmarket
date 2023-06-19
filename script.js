@@ -7,24 +7,31 @@ const emptyCartBtn = document.querySelector('#empty-cart');
 const itemsList = document.querySelector('.cardscontainer');
 let cartItems = []; 
 const cartImg = document.querySelector('#carritoImg');
+const deleteBtn = document.querySelectorAll('.delete-btn');
 
 
 itemsList.addEventListener('click', addItem);
+        
+        //DELETES ALL THE ELEMENTS FROM THE CART
 emptyCartBtn.addEventListener('click', () =>{
     clearCart();
     cartItems = []; 
 } );
 
-
             //SHOWS OR HIDES THE CART CONTENT
-cartImg.addEventListener('click', ()=>{
+cartImg.addEventListener('click', () => {
     if(cart.style.display === 'block'){
         cart.style.display = "none";
     }
     else{
         cart.style.display = "block";
     }
-})
+});
+
+        //DELETES THE SELECTED ELEMENT FROM THE CART
+cartContainer.addEventListener('click', deleteItem);
+    
+
         //DETECT WHERE WAS CLICKED AND GETS THE ELEMENT
 function addItem(e){
     e.preventDefault();
@@ -57,8 +64,6 @@ function readItemInfo(card){
        
     }       //CREATES A NEW ELEMENT
     else{
-       
-
         const item = {
             id: card.querySelector('button').getAttribute('data-id'),
             image: card.querySelector('img').src,
@@ -85,11 +90,32 @@ function cartHTML(){
             <td>${size}</td>
             <td>${price}</td>
             <td>${amount} </td>
-            <td><a href="#"class="delete-btn">X</a></td>
+            <td><a href="#"class="delete-btn" data-id="${id}">X</a></td>
         `;
         cartContainer.appendChild(row);
     });
 }
+
+
+        //DELETES THE SELECTED ELEMENT FROM THE CART
+function deleteItem(e){
+    if(e.target.classList.contains('delete-btn')){
+        const selectedId = e.target.getAttribute('data-id'); //get the id
+        const selectedSize = e.target.parentElement.parentElement.querySelector(':nth-child(3)').textContent; //get the choosen size
+        const newArray = cartItems.filter((el)=>{
+            if(el.id !== selectedId){ 
+                return el;
+            }
+            else if(el.size !== selectedSize){
+                return el;
+            }
+        })
+        cartItems = [...newArray];
+        cartHTML();
+    }
+}
+
+
         //CLEAN THE CART TO AVOID DUPLICATES
 function clearCart(){
     while(cartContainer.firstChild){
