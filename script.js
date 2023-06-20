@@ -8,6 +8,7 @@ const itemsList = document.querySelector('.cardscontainer');
 let cartItems = []; 
 const cartImg = document.querySelector('#carritoImg');
 const deleteBtn = document.querySelectorAll('.delete-btn');
+const searchBar = document.querySelector('#searchBar');
 
 
 itemsList.addEventListener('click', addItem);
@@ -120,5 +121,20 @@ function deleteItem(e){
 function clearCart(){
     while(cartContainer.firstChild){
         cartContainer.removeChild(cartContainer.firstChild);
+    }
+}
+        //LETS THE USER SEARCH USING KEYWORDS
+function search(){
+    let input = searchBar.value.toLowerCase();
+    let x = document.querySelectorAll('.card');
+    for(let i = 0; i < x.length; i++){
+        if(!x[i].innerText.toLowerCase().includes(input)){
+            console.log('IS NOT included');
+            x[i].style.display="none";
+        }
+        else{
+            console.log('is included')
+            x[i].style.display="flex";
+        }
     }
 }
